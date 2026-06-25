@@ -172,15 +172,13 @@ query {
 
 ## Decisões técnicas
 
-### PostgreSQL com transações e bloqueio pessimista
-
-A emissão de uma ordem usa uma transação explícita:
+A emissão de um pedido usa uma transação explícita:
 
 1. `BEGIN`
 2. valida usuário
 3. busca cada produto com `SELECT ... FOR UPDATE`
 4. valida estoque
-5. cria a ordem e seus itens
+5. cria o pedido e seus itens
 6. baixa o estoque
 7. `COMMIT`
 
@@ -191,10 +189,6 @@ Isso garante que pedidos simultâneos para o mesmo produto sejam serializados no
 ### Ordenação dos produtos antes do lock
 
 Os itens do pedido são agregados por produto e ordenados por `productId` antes de bloquear as linhas. Isso reduz risco de deadlock quando duas compras envolvem os mesmos produtos em ordens diferentes.
-
-### SQL explícito em vez de ORM
-
-Usei SQL explícito para deixar claro onde estão os locks, índices e transações. Isso reduz abstração nas partes críticas de consistência.
 
 ## Erros de negócio
 
