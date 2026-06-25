@@ -1,4 +1,4 @@
-## Estrutura do banco
+## Estrutura do DB
 
 ```sql
 CREATE TABLE users (
@@ -46,7 +46,7 @@ O API ficará disponível em:
 http://localhost:4000/
 ```
 
-O endpoint GraphQL é o próprio endpoint HTTP do Apollo standalone.
+O endpoint GraphQL é o próprio endpoint HTTP do Apollo.
 
 Também é possível rodar com Node.js e DB via Docker: 
 
@@ -56,18 +56,20 @@ npm run db:up
 npm start
 ```
 
-## Como testar
+## Executando Testes
 
 ```bash
 npm test
 ```
-Os testes rodam um DB isolado na porta `55432`; Se tiver um timeout no DB roda o comando novamente.
+Os testes rodam um DB isolado na porta `55432`;
+Se tiver um timeout no DB roda o comando novamente.
 
+### Resultado esperado:
 ![preview dos testes](npmtest.jpg)
 
-## Exemplos GraphQL
+## Exemplos Para o Api
 
-Criar usuário:
+### Criar usuários:
 
 ```graphql
 mutation {
@@ -79,7 +81,7 @@ mutation {
 }
 ```
 
-Criar produto:
+### Criar produtos:
 
 ```graphql
 mutation {
@@ -96,7 +98,7 @@ mutation {
 }
 ```
 
-Criar pedido:
+### Criar pedidos:
 
 ```graphql
 mutation {
@@ -117,7 +119,7 @@ mutation {
 }
 ```
 
-Listar usuários e pedidos:
+### Listar usuários e pedidos:
 
 ```graphql
 query {
@@ -142,7 +144,7 @@ query {
 }
 ```
 
-Listar produtos:
+### Listar produtos:
 
 ```graphql
 query {
