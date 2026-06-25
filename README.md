@@ -86,7 +86,7 @@ mutation {
 ```graphql
 mutation {
   createProduct(input: {
-    name: "Teclado Mecânico"
+    name: "Teclado Razer"
     price: "250.00"
     stock: 10
   }) {
@@ -173,11 +173,9 @@ Se qualquer etapa falhar, a transação executa `ROLLBACK`.
 
 Isso garante que pedidos simultâneos para o mesmo produto sejam serializados no banco. Quando o estoque chega a zero, a segunda transação enxerga o novo valor e recebe erro `INSUFFICIENT_STOCK`.
 
-### Ordenação dos produtos antes do lock
+Os itens do pedido são agregados por produto e ordenados por `productId` antes de travar as linhas. Isso reduz risco de deadlock quando duas compras envolvem os mesmos produtos em ordens diferentes.
 
-Os itens do pedido são agregados por produto e ordenados por `productId` antes de bloquear as linhas. Isso reduz risco de deadlock quando duas compras envolvem os mesmos produtos em ordens diferentes.
-
-## Erros de negócio
+## Erros
 
 A API retorna erros GraphQL com `extensions.code`, por exemplo:
 
@@ -190,17 +188,15 @@ A API retorna erros GraphQL com `extensions.code`, por exemplo:
 ## Trade-offs
 
 - A API usa migração simples no startup (`CREATE TABLE IF NOT EXISTS`).
-- Não há autenticação/autorização..
-- Não há paginação nas listagens. Em produção, `users` e `products` deveriam aceitar paginação, filtros e ordenação.
-- Apollo Server  simplifica a entrega. Se fossem necessários middlewares HTTP avançados, métricas customizadas poderia ter uma  integração com Fastify/Express.
-- Valores monetários são enviados como `String` no GraphQL.
+- Não há autenticação/autorização.
+- Não há paginação nas listagens ou filtragem.
+- Valores de especie  são enviados como `String` no GraphQL.
 
 ## O que faria diferente com mais tempo
 
 - Adicionaria autenticação.
-- Adicionaria paginação cursor-based nas queries.
+- Adicionaria paginação nas queries.
 - Separaria migrações versionadas.
 - Adicionaria observabilidade: logs estruturados, tracing e métricas.
 - Adicionaria testes de API GraphQL ponta a ponta além dos testes de serviço.
-- Adicionaria CI para rodar testes automaticamente em cada pull request.
-- Criaria um scalar `Decimal` customizado para os valores.
+- Adicionaria CI para rodar testes automaticamente em cada pull request no Github.
