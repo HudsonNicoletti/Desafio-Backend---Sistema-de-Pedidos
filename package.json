@@ -1,0 +1,20 @@
+{
+  "name": "Desafio-Backend---Sistema-de-Pedidos",
+  "version": "1.0.0",
+  "description": "Desafio Backend - Sistema de Pedidos",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "db:up": "docker compose up -d db",
+    "db:down": "docker compose down -v",
+    "dev": "npm run db:up && node src/server.js",
+    "test": "node scripts/run-tests.js",
+    "test:local": "NODE_ENV=test node --test --test-concurrency=1"
+  },
+  "dependencies": {
+    "@apollo/server": "^5.5.1",
+    "graphql": "^16.9.0",
+    "pg": "^8.13.1"
+  }
+}
