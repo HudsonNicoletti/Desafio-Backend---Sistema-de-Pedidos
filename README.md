@@ -1,15 +1,4 @@
-## Stack
-
-- Node.js com ES Modules
-- Apollo Server GraphQL
-- PostgreSQL
-- Driver `pg`, usando SQL explícito
-- `node:test` para testes automatizados
-- Docker e Docker Compose
-
 ## Estrutura do banco
-
-A modelagem segue a estrutura sugerida, com uns pequenos adicionais de constraints:
 
 ```sql
 CREATE TABLE users (
@@ -45,18 +34,13 @@ CREATE TABLE order_items (
 
 ## Como executar
 
-Pré-requisitos:
-
-- Docker com daemon ativo
-- Docker Compose
-
-Subir API e banco:
+Rodar API e DB:
 
 ```bash
 docker compose up --build
 ```
 
-A API ficará disponível em:
+O API ficará disponível em:
 
 ```text
 http://localhost:4000/
@@ -64,7 +48,7 @@ http://localhost:4000/
 
 O endpoint GraphQL é o próprio endpoint HTTP do Apollo standalone.
 
-Também é possível rodar localmente com Node.js e banco via Docker: 
+Também é possível rodar com Node.js e DB via Docker: 
 
 ```bash
 npm install
@@ -74,11 +58,12 @@ npm start
 
 ## Como testar
 
-Os testes sobem um PostgreSQL isolado na porta `55432`:
-
 ```bash
 npm test
 ```
+Os testes rodam um DB isolado na porta `55432`; Se tiver um timeout no DB roda o comando novamente.
+
+![preview dos testes](npmtest.jpg)
 
 ## Exemplos GraphQL
 
