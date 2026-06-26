@@ -18,11 +18,6 @@ export async function createUser({ name, email }) {
   }
 }
 
-export async function getUserById(id) {
-  const result = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
-  return mapUser(result.rows[0]);
-}
-
 export async function listUsers() {
   const usersResult = await pool.query('SELECT * FROM users ORDER BY id');
   const users = usersResult.rows.map((row) => ({ ...mapUser(row), orders: [] }));
