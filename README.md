@@ -157,6 +157,17 @@ query {
 }
 ```
 
+## Arquitetura                                                                                                                                    
+- src/server.js: Inicia  Apollo, executa  migration.                                                                                                    
+- src/graphql/schema.js: GraphQL queries/mutations.                                                                                          
+- src/graphql/resolvers.js: Mapeia GraphQL pedidos a functions.                                                                    
+- src/repositories/users.js: CRUD queries de usuarios.                                                                                                
+- src/repositories/products.js: CRUD queries de produtos.                                                                                          
+- src/services/orders.js: logica de criacao de pedidos..                                                                                           
+- src/db.js: Postgres + migration/reset.                                                                                                      
+- src/errors.js: Validacao/ error helpers.                                                                                                  
+- src/mappers.js: GraphQL object mapping.  
+
 ## Decisões técnicas
 
 A emissão de um pedido usa uma transação explícita:
