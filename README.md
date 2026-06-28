@@ -171,14 +171,19 @@ query {
 ## Decisões técnicas
 
 A emissão de um pedido usa uma transação explícita:
+    
+1. Valide id de usuario e itens do pedido.                                                                                                               
+2. Junta produtos duplicados.                                                                                                                  
+3. Inicia transacao.                                                                                                                           
+4. Verifica se usuario existe.                                                                                                                              
+5. Trava cada produto com `SELECT ... FOR UPDATE`                                                                                         
+6. Verifica o estoque.                                                                                                                                    
+7. Faz o pedido.                                                                                                                                   
+8. Insere os itens.                                                                                                                             
+9. Diminui estoque.                                                                                                                         
+10. Envia.                                                                                                                                        
+11. Rollback em qualquer error.  
 
-1. `BEGIN`
-2. valida usuário
-3. busca cada produto com `SELECT ... FOR UPDATE`
-4. valida estoque
-5. cria o pedido e seus itens
-6. baixa o estoque
-7. `COMMIT`
 
 Se qualquer etapa falhar, a transação executa `ROLLBACK`.
 
