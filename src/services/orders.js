@@ -7,6 +7,7 @@ function normalizeItems(items) {
     throw new DomainError('VALIDATION_ERROR', 'pedido deve conter ao menos um item');
   }
 
+  // Junte produtos duplicados para que cada produto seja bloqueado e atualizado uma vez.
   const quantities = new Map();
   for (const item of items) {
     assertPositiveInteger(Number(item.productId), 'productId');
@@ -33,6 +34,7 @@ export async function createOrder({ userId, items }) {
       throw new DomainError('USER_NOT_FOUND', 'usuário não encontrado', { userId });
     }
 
+    // Travar os produtos antes de verificar o estoque; isso mantém os pedidos simultâneos corretos.
     const lockedProducts = [];
     for (const item of normalizedItems) {
       const productResult = await client.query(
@@ -60,6 +62,7 @@ export async function createOrder({ userId, items }) {
       .reduce((sum, product) => sum + Number(product.price) * product.quantity, 0)
       .toFixed(2);
 
+    // Salva o header do pedido,depois os itens, dentro de uma transacao
     const orderResult = await client.query(
       'INSERT INTO orders (user_id, total) VALUES ($1, $2) RETURNING *',
       [userId, total]
@@ -67,6 +70,7 @@ export async function createOrder({ userId, items }) {
     const order = mapOrder(orderResult.rows[0]);
 
     for (const product of lockedProducts) {
+      //Estoque e item alteram juntos; rollback cuida qualquer falha abaixo.
       await client.query('UPDATE products SET stock = stock - $1 WHERE id = $2', [product.quantity, product.id]);
       const itemResult = await client.query(
         `INSERT INTO order_items (order_id, product_id, quantity, price)

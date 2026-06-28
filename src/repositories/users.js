@@ -19,6 +19,7 @@ export async function createUser({ name, email }) {
 }
 
 export async function listUsers() {
+  // Comecar com usuarios; sem usuarios = nehum pedido para juntar
   const usersResult = await pool.query('SELECT * FROM users ORDER BY id');
   const users = usersResult.rows.map((row) => ({ ...mapUser(row), orders: [] }));
   if (users.length === 0) return users;
@@ -40,6 +41,7 @@ export async function listUsers() {
   const usersById = new Map(users.map((user) => [user.id, user]));
   const ordersById = new Map();
 
+  // A junção retorna uma linha por item; reconstroi usuários → pedidos → itens.
   for (const row of ordersResult.rows) {
     const orderId = String(row.id);
     if (!ordersById.has(orderId)) {

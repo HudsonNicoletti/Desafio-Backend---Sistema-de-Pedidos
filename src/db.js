@@ -9,9 +9,8 @@ export const pool = new Pool({
   idleTimeoutMillis: 30_000
 });
 
-// usando mesmo formato dado no MD
-
 export async function migrate() {
+    
   await pool.query(`
     CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
