@@ -179,13 +179,10 @@ A emissão de um pedido usa uma transação explícita:
 5. Trava cada produto com `SELECT ... FOR UPDATE`                                                                                         
 6. Verifica o estoque.                                                                                                                                    
 7. Faz o pedido.                                                                                                                                   
-8. Insere os itens.                                                                                                                             
+8. Insere os itens.                                                                                                                            
 9. Diminui estoque.                                                                                                                         
-10. Envia.                                                                                                                                        
-11. Rollback em qualquer error.  
-
-
-Se qualquer etapa falhar, a transação executa `ROLLBACK`.
+10. Executa.                                                                                                                       
+### Se qualquer etapa falhar, a transação executa um <font color="red"> `ROLLBACK` 🔄</font>.
 
 Isso garante que pedidos simultâneos para o mesmo produto sejam serializados no banco. Quando o estoque chega a zero, a segunda transação enxerga o novo valor e recebe erro `INSUFFICIENT_STOCK`.
 
