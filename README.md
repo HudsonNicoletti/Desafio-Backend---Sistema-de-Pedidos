@@ -1,4 +1,5 @@
- md                                                                                                          tests
+![tests](https://github.com/HudsonNicoletti/Desafio-Backend---Sistema-de-Pedidos/actions/workflows/tests.yml/badge.svg)
+
 ## Estrutura do DB
 
 ```sql
